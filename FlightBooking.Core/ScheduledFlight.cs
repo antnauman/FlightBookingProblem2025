@@ -19,7 +19,6 @@
         public FlightRoute FlightRoute { get; private set; }
         public Plane Plane { get; private set; }
         public List<Passenger> Passengers { get; private set; }
-
         public void SetFlightRoute(FlightRoute flightRoute)
         {
             if (flightRoute == null)
@@ -34,6 +33,14 @@
             { throw new ArgumentException("Plane is invalid"); }
             
             Plane = plane;
+        }
+
+        /// <summary>
+        /// This always returns a new instance of FlightStats based on the current state of the flight.
+        /// </summary>
+        public FlightStats CalculateFlightStats()
+        {
+            return new FlightStats(this);
         }
 
         /// <summary>

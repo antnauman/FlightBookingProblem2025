@@ -61,13 +61,13 @@ namespace FlightBooking.Tests
             scheduledFlight.SetPlane(new Plane { Id = 1, Name = "Plane01", NumberOfSeats = 5 });
             scheduledFlight.AddPassenger(new DiscountedPassenger { Name = "Passenger01", Age = 25 });
 
-            var s = new FlightStats(scheduledFlight);
-            Assert.Equal(1, s.SeatsTaken);
-            Assert.Equal(0, s.TotalLoyaltyPointsAccrued);
-            Assert.Equal(0, s.TotalLoyaltyPointsRedeemed);
-            Assert.Equal(0, s.TotalExpectedBaggage); // 0 bags
-            Assert.Equal(50, s.ProfitFromFlight);    // half price
-            Assert.Equal(50, s.CostOfFlight);
+            var flightStats = scheduledFlight.CalculateFlightStats();
+            Assert.Equal(1, flightStats.SeatsTaken);
+            Assert.Equal(0, flightStats.TotalLoyaltyPointsAccrued);
+            Assert.Equal(0, flightStats.TotalLoyaltyPointsRedeemed);
+            Assert.Equal(0, flightStats.TotalExpectedBaggage); // 0 bags
+            Assert.Equal(50, flightStats.ProfitFromFlight);    // half price
+            Assert.Equal(50, flightStats.CostOfFlight);
         }
 
         [Fact]

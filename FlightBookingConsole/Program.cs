@@ -24,11 +24,11 @@ namespace FlightBookingProblem
 
                         if (enteredText.Contains("print summary"))
                         {
-                            var stats = new FlightStats(SampleScheduledFlight);
+                            var flightStats = SampleScheduledFlight.CalculateFlightStats();
                             var alternatePlanes = GetAlternatePlanes();
 
                             Console.WriteLine();
-                            Console.WriteLine(FlightBookingLogic.GenerateFlightSummary(stats, ruleSet, alternatePlanes));
+                            Console.WriteLine(FlightBookingLogic.GenerateFlightSummary(flightStats, ruleSet, alternatePlanes));
                         }
                         else if (enteredText.Contains("use ruleset"))
                         {

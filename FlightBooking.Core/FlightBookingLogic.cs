@@ -42,6 +42,22 @@ namespace FlightBooking.Core
         }
 
         /// <summary>
+        /// This method generates a flight summary based on the scheduled flight and the ruleset provided. If the flight cannot proceed, it suggests alternate planes if any are suitable.
+        /// </summary>
+        /// <param name="flightStats"></param>
+        /// <param name="ruleSet"></param>
+        /// <param name="alternatePlanes"></param>
+        /// <returns>Summary as a string</returns>
+        public static string GenerateFlightSummary(ScheduledFlight scheduledFlight, RuleSet ruleSet, IList<Plane> alternatePlanes = null)
+        {
+            if (scheduledFlight == null || !scheduledFlight.IsValidFlight())
+            { throw new Exception("Flight is invalid"); }
+
+            var flightStats = scheduledFlight.CalculateFlightStats();
+            return GenerateFlightSummary(flightStats, ruleSet, alternatePlanes ?? new List<Plane>());
+        }
+
+        /// <summary>
         /// This method generates a flight summary based on the flight statistics and the ruleset provided. If the flight cannot proceed, it suggests alternate planes if any are suitable.
         /// </summary>
         /// <param name="flightStats"></param>
