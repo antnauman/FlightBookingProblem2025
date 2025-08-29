@@ -11,8 +11,9 @@ namespace FlightBookingProblem
             try
             {
                 SampleScheduledFlight = GetBaseScheduledFlight();
-
+                RuleSet ruleSet = new DefaultRuleSet();
                 string command = "";
+
                 do
                 {
                     try
@@ -23,17 +24,24 @@ namespace FlightBookingProblem
 
                         if (enteredText.Contains("print summary"))
                         {
-                            RuleSet ruleSet;
-                            if (enteredText.Contains("relaxed"))
-                            { ruleSet = new RelaxedRuleSet(); }
-                            else
-                            { ruleSet = new DefaultRuleSet(); }
-
                             var stats = new FlightStats(SampleScheduledFlight);
                             var alternatePlanes = GetAlternatePlanes();
 
                             Console.WriteLine();
                             Console.WriteLine(FlightBookingLogic.GenerateFlightSummary(stats, ruleSet, alternatePlanes));
+                        }
+                        else if (enteredText.Contains("use ruleset"))
+                        {
+                            if (enteredText.Contains("relaxed"))
+                            {
+                                ruleSet = new RelaxedRuleSet();
+                                Console.WriteLine("- Now using Relaxed RuleSet -");
+                            }
+                            else if (enteredText.Contains("default"))
+                            {
+                                ruleSet = new DefaultRuleSet();
+                                Console.WriteLine("- Now using Default RuleSet -");
+                            }
                         }
                         else if (enteredText.Contains("add general"))
                         {

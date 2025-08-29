@@ -7,6 +7,14 @@ namespace FlightBooking.Core
     /// </summary>
     public class FlightBookingLogic
     {
+        /// <summary>
+        /// This is just a helper method to create passengers of different types based on the parameters provided.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        /// <param name="age"></param>
+        /// <param name="loyaltyPoints"></param>
+        /// <param name="isUsingLoyaltyPoints"></param>
         public static Passenger CreatePassenger(string type, string name, int age, int loyaltyPoints = 0, bool isUsingLoyaltyPoints = false)
         {
             if (string.IsNullOrWhiteSpace(type))
@@ -46,23 +54,18 @@ namespace FlightBooking.Core
             { throw new Exception("Flight is invalid"); }
             var summaryBuilder = new StringBuilder();
 
-            summaryBuilder.Append("Flight summary for " + flightStats.ScheduledFlight.FlightRoute.Title);
-            summaryBuilder.Append(Statics.VERTICAL_WHITE_SPACE);
+            summaryBuilder.AppendLine("Flight summary for " + flightStats.ScheduledFlight.FlightRoute.Title);
             summaryBuilder.AppendLine("Total passengers: " + flightStats.SeatsTaken);
-            summaryBuilder.AppendLine(Statics.INDENTATION + "General sales: " + flightStats.ScheduledFlight.Passengers.Count(p => p is GeneralPassenger));
-            summaryBuilder.AppendLine(Statics.INDENTATION + "Loyalty member sales: " + flightStats.ScheduledFlight.Passengers.Count(p => p is LoyaltyMember));
-            summaryBuilder.AppendLine(Statics.INDENTATION + "Discounted member sales: " + flightStats.ScheduledFlight.Passengers.Count(p => p is DiscountedPassenger));
-            summaryBuilder.AppendLine(Statics.INDENTATION + "Airline employee comps: " + flightStats.ScheduledFlight.Passengers.Count(p => p is AirlineEmployee));
-            summaryBuilder.Append(Statics.VERTICAL_WHITE_SPACE);
-            summaryBuilder.Append("Total expected baggage: " + flightStats.TotalExpectedBaggage);
-            summaryBuilder.Append(Statics.VERTICAL_WHITE_SPACE);
+            summaryBuilder.AppendLine("General sales: " + flightStats.ScheduledFlight.Passengers.Count(p => p is GeneralPassenger));
+            summaryBuilder.AppendLine("Loyalty member sales: " + flightStats.ScheduledFlight.Passengers.Count(p => p is LoyaltyMember));
+            summaryBuilder.AppendLine("Discounted member sales: " + flightStats.ScheduledFlight.Passengers.Count(p => p is DiscountedPassenger));
+            summaryBuilder.AppendLine("Airline employee comps: " + flightStats.ScheduledFlight.Passengers.Count(p => p is AirlineEmployee));
+            summaryBuilder.AppendLine("Total expected baggage: " + flightStats.TotalExpectedBaggage);
             summaryBuilder.AppendLine("Total revenue from flight: " + flightStats.ProfitFromFlight);
             summaryBuilder.AppendLine("Total costs from flight: " + flightStats.CostOfFlight);
-            summaryBuilder.Append((flightStats.ProfitSurplus > 0 ? "Flight generating profit of: " : "Flight losing money of: ") + flightStats.ProfitSurplus);
-            summaryBuilder.Append(Statics.VERTICAL_WHITE_SPACE);
-            summaryBuilder.Append("Total loyalty points given away: " + flightStats.TotalLoyaltyPointsAccrued + Statics.NEW_LINE);
-            summaryBuilder.Append("Total loyalty points redeemed: " + flightStats.TotalLoyaltyPointsRedeemed + Statics.NEW_LINE);
-            summaryBuilder.Append(Statics.VERTICAL_WHITE_SPACE);
+            summaryBuilder.AppendLine((flightStats.ProfitSurplus > 0 ? "Flight generating profit of: " : "Flight losing money of: ") + flightStats.ProfitSurplus);
+            summaryBuilder.AppendLine("Total loyalty points given away: " + flightStats.TotalLoyaltyPointsAccrued);
+            summaryBuilder.AppendLine("Total loyalty points redeemed: " + flightStats.TotalLoyaltyPointsRedeemed);
 
             if (ruleSet.ValidateRuleSet(flightStats))
             { summaryBuilder.AppendLine("THIS FLIGHT MAY PROCEED"); }
