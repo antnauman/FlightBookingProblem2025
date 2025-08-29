@@ -65,6 +65,11 @@
             AddRule(new AirlineEmployeeRule());
         }
 
+        /// <summary>
+        /// This is a custom implementation of ValidateRuleSet to comply with the relaxed rule logic.
+        /// </summary>
+        /// <param name="flightStats"></param>
+        /// <returns>true if ruleset is validated</returns>
         public override bool ValidateRuleSet(FlightStats flightStats)
         {
             var seatRule = Rules.OfType<SeatRule>().FirstOrDefault();

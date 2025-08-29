@@ -1,5 +1,8 @@
 ﻿namespace FlightBooking.Core
 {
+    /// <summary>
+    /// This class is used to generate statistics for a given flight, which can be used to generate summary.
+    /// </summary>
     public class FlightStats
     {
         public double CostOfFlight { get; set; }
@@ -10,9 +13,6 @@
         public int SeatsTaken { get; set; }
         public double ProfitSurplus { get { return ProfitFromFlight - CostOfFlight; } }
         public ScheduledFlight ScheduledFlight { get; set; }
-
-        public FlightStats()
-        { }
 
         public FlightStats(ScheduledFlight scheduledFlight)
         {

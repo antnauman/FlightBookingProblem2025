@@ -1,5 +1,8 @@
 ﻿namespace FlightBooking.Core
 {
+    /// <summary>
+    /// Rule class defines a single rule that can be validated against a flight's statistics. Multiple rules can be combined into a RuleSet.
+    /// </summary>
     public abstract class Rule
     {
         public string Name { get; set; }

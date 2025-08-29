@@ -80,6 +80,9 @@ namespace FlightBookingProblem
             }
         }
 
+        /// <summary>
+        /// This method sets up a base scheduled flight with a flight route and a plane.
+        /// </summary>
         private static ScheduledFlight GetBaseScheduledFlight()
         {
             var tempScheduledFlight = new ScheduledFlight();
@@ -98,6 +101,9 @@ namespace FlightBookingProblem
             return tempScheduledFlight;
         }
 
+        /// <summary>
+        /// This method provides a list of alternate planes that can be suggested if the current plane cannot be used for the flight.
+        /// </summary>
         private static List<Plane> GetAlternatePlanes()
         {
             var alternatePlanes = new List<Plane>

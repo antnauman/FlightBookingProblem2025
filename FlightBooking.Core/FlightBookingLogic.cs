@@ -2,6 +2,9 @@
 
 namespace FlightBooking.Core
 {
+    /// <summary>
+    /// This class has the logic of creating passengers for flight, generating flight summaries and suggesting alternate planes if a flight cannot proceed.
+    /// </summary>
     public class FlightBookingLogic
     {
         public static Passenger CreatePassenger(string type, string name, int age, int loyaltyPoints = 0, bool isUsingLoyaltyPoints = false)
@@ -30,6 +33,13 @@ namespace FlightBooking.Core
             }
         }
 
+        /// <summary>
+        /// This method generates a flight summary based on the flight statistics and the ruleset provided. If the flight cannot proceed, it suggests alternate planes if any are suitable.
+        /// </summary>
+        /// <param name="flightStats"></param>
+        /// <param name="ruleSet"></param>
+        /// <param name="alternatePlanes"></param>
+        /// <returns>Summary as a string</returns>
         public static string GenerateFlightSummary(FlightStats flightStats, RuleSet ruleSet, IList<Plane> alternatePlanes = null)
         {
             if (flightStats == null || flightStats.ScheduledFlight == null || !flightStats.ScheduledFlight.IsValidFlight())
@@ -71,6 +81,13 @@ namespace FlightBooking.Core
             return summaryBuilder.ToString();
         }
 
+        /// <summary>
+        /// This method checks each of the alternate planes provided to see if any of them would allow the flight to proceed based on the ruleset provided.
+        /// </summary>
+        /// <param name="flightStats"></param>
+        /// <param name="ruleSet"></param>
+        /// <param name="alternatePlanes"></param>
+        /// <returns>Alternate planes list in a string</returns>
         private static string GetAlternateSuitablePlaneSuggestions(FlightStats flightStats, RuleSet ruleSet, IList<Plane> alternatePlanes)
         {
             if (alternatePlanes == null || alternatePlanes.Count == 0)
