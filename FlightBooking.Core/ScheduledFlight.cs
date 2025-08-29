@@ -1,121 +1,70 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-
-namespace FlightBooking.Core
+﻿namespace FlightBooking.Core
 {
     public class ScheduledFlight
     {
-        private readonly string VERTICAL_WHITE_SPACE = Environment.NewLine + Environment.NewLine;
-        private readonly string NEW_LINE = Environment.NewLine;
-        private const string INDENTATION = "    ";
+        public ScheduledFlight()
+        {
+            Passengers = new List<Passenger>();
+        }
 
         public ScheduledFlight(FlightRoute flightRoute)
         {
+            if (flightRoute == null)
+            { throw new ArgumentException("Flight route is invalid"); }
+
             FlightRoute = flightRoute;
             Passengers = new List<Passenger>();
         }
 
         public FlightRoute FlightRoute { get; private set; }
-        public Plane Aircraft { get; private set; }
+        public Plane Plane { get; private set; }
         public List<Passenger> Passengers { get; private set; }
 
-        public void AddPassenger(Passenger passenger)
+        public void SetFlightRoute(FlightRoute flightRoute)
         {
-            Passengers.Add(passenger);
+            if (flightRoute == null)
+            { throw new ArgumentException("Flight route is invalid"); }
+            
+            FlightRoute = flightRoute;
         }
 
-        public void SetAircraftForRoute(Plane aircraft)
+        public void SetPlane(Plane plane)
         {
-            Aircraft = aircraft;
+            if (plane == null)
+            { throw new ArgumentException("Plane is invalid"); }
+            
+            Plane = plane;
         }
-        
-        public string GetSummary()
+
+        public bool AddPassenger(Passenger passenger)
         {
-            double costOfFlight = 0;
-            double profitFromFlight = 0;
-            int totalLoyaltyPointsAccrued = 0;
-            int totalLoyaltyPointsRedeemed = 0;
-            int totalExpectedBaggage = 0;
-            int seatsTaken = 0;
+            if (passenger == null)
+            { throw new ArgumentException("Passenger is invalid"); }
 
-            string result = "Flight summary for " + FlightRoute.Title;
-
-            foreach (var passenger in Passengers)
+            if (!Passengers.Exists(x => string.Equals(x.Name, passenger.Name, StringComparison.OrdinalIgnoreCase)))
             {
-                switch (passenger.Type)
-                {
-                    case(PassengerType.General):
-                        {
-                            profitFromFlight += FlightRoute.BasePrice;
-                            totalExpectedBaggage++;
-                            break;
-                        }
-                    case(PassengerType.LoyaltyMember):
-                        {
-                            if (passenger.IsUsingLoyaltyPoints)
-                            {
-                                int loyaltyPointsRedeemed = Convert.ToInt32(Math.Ceiling(FlightRoute.BasePrice));
-                                passenger.LoyaltyPoints -= loyaltyPointsRedeemed;
-                                totalLoyaltyPointsRedeemed += loyaltyPointsRedeemed;
-                            }
-                            else
-                            {
-                                totalLoyaltyPointsAccrued += FlightRoute.LoyaltyPointsGained;
-                                profitFromFlight += FlightRoute.BasePrice;                           
-                            }
-                            totalExpectedBaggage += 2;
-                            break;
-                        }
-                    case(PassengerType.AirlineEmployee):
-                        {
-                            totalExpectedBaggage += 1;
-                            break;
-                        }
-                }
-                costOfFlight += FlightRoute.BaseCost;
-                seatsTaken++;
+                Passengers.Add(passenger);
+                return true;
             }
 
-            result += VERTICAL_WHITE_SPACE;
-            
-            result += "Total passengers: " + seatsTaken;
-            result += NEW_LINE;
-            result += INDENTATION + "General sales: " + Passengers.Count(p => p.Type == PassengerType.General);
-            result += NEW_LINE;
-            result += INDENTATION + "Loyalty member sales: " + Passengers.Count(p => p.Type == PassengerType.LoyaltyMember);
-            result += NEW_LINE;
-            result += INDENTATION + "Airline employee comps: " + Passengers.Count(p => p.Type == PassengerType.AirlineEmployee);
-            
-            result += VERTICAL_WHITE_SPACE;
-            result += "Total expected baggage: " + totalExpectedBaggage;
+            return false;
+        }
 
-            result += VERTICAL_WHITE_SPACE;
+        public bool RemovePassenger(Passenger passenger)
+        {
+            if (passenger == null)
+            { throw new ArgumentException("Passenger is invalid"); }
 
-            result += "Total revenue from flight: " + profitFromFlight;
-            result += NEW_LINE;
-            result += "Total costs from flight: " + costOfFlight;
-            result += NEW_LINE;
+            Passengers.Remove(passenger);
+            return true;
+        }
 
-            double profitSurplus = profitFromFlight - costOfFlight;
-
-            result += (profitSurplus > 0 ? "Flight generating profit of: " : "Flight losing money of: ") + profitSurplus;
-
-            result += VERTICAL_WHITE_SPACE;
-
-            result += "Total loyalty points given away: " + totalLoyaltyPointsAccrued + NEW_LINE;
-            result += "Total loyalty points redeemed: " + totalLoyaltyPointsRedeemed + NEW_LINE;
-
-            result += VERTICAL_WHITE_SPACE;
-
-            if (profitSurplus > 0 && 
-                seatsTaken < Aircraft.NumberOfSeats && 
-                seatsTaken / (double)Aircraft.NumberOfSeats > FlightRoute.MinimumTakeOffPercentage)
-                result += "THIS FLIGHT MAY PROCEED";
-            else
-                result += "FLIGHT MAY NOT PROCEED";
-
-            return result;
+        public bool IsValidFlight()
+        {
+            if (Passengers.Count <= 0) { return false; }
+            if (Plane == null) { return false; }
+            if (FlightRoute == null) { return false; }
+            return true;
         }
     }
 }
